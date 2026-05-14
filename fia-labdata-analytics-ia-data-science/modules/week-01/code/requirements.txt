@@ -1,0 +1,7 @@
+# Week 01 code uses only the Python standard library.
+# Install these optional packages if you want to prepare the environment for later weeks.
+pandas
+numpy
+scikit-learn
+matplotlib
+jupyter
