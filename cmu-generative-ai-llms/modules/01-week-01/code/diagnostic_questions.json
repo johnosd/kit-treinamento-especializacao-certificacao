@@ -1,0 +1,52 @@
+[
+  {
+    "area": "Machine Learning",
+    "question": "Explique overfitting, validation split e generalization em um modelo supervisionado.",
+    "max_score": 5
+  },
+  {
+    "area": "Machine Learning",
+    "question": "Defina cross-entropy e diga por que ela é usada em classificação.",
+    "max_score": 5
+  },
+  {
+    "area": "NLP",
+    "question": "Diferencie tokenização, embeddings e language modeling.",
+    "max_score": 5
+  },
+  {
+    "area": "NLP",
+    "question": "Explique por que perplexity depende do tokenizador e do corpus.",
+    "max_score": 5
+  },
+  {
+    "area": "PyTorch",
+    "question": "Explique tensor, autograd, backward, optimizer.step e zero_grad.",
+    "max_score": 5
+  },
+  {
+    "area": "PyTorch",
+    "question": "Descreva como verificar shapes em um batch de sequências.",
+    "max_score": 5
+  },
+  {
+    "area": "Probabilidade/Otimização",
+    "question": "Explique probabilidade condicional e gradient descent.",
+    "max_score": 5
+  },
+  {
+    "area": "Probabilidade/Otimização",
+    "question": "Calcule conceitualmente softmax e explique estabilidade numérica.",
+    "max_score": 5
+  },
+  {
+    "area": "Sistemas",
+    "question": "Explique diferença entre CPU, GPU, memória de GPU e armazenamento.",
+    "max_score": 5
+  },
+  {
+    "area": "Sistemas",
+    "question": "Explique por que batch size, sequence length e model size afetam memória.",
+    "max_score": 5
+  }
+]
