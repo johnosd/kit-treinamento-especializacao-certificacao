@@ -1,567 +1,116 @@
-# MBA AutoDirigido — Guias, Prompts e Kits de Estudo
+# MBA AutoDirigido
 
-Este repositório organiza prompts e materiais gerados para criar kits de estudo autodirigido em nível de pós-graduação técnica, com foco em profundidade, implementação real, leitura de papers, engenharia de sistemas e produção de projetos.
+Clones autodidatas de especializações de pós-graduação top-tier (Harvard, MIT, Stanford, CMU, Berkeley, FIA, …) gerados por uma suite de prompts.
 
-O fluxo foi desenhado para funcionar em duas etapas:
-
-1. **Extrair e estruturar uma grade curricular oficial** a partir de fontes públicas.
-2. **Gerar um kit de estudos incremental** a partir dessa grade, sem criar o curso inteiro de uma vez.
+Dado um par `(curso, instituição)`, o fluxo produz um kit de estudos com profundidade equivalente à pós-graduação original, baseado em fontes oficiais, com gate de fidelidade explícito.
 
 ---
 
-## Estrutura Geral
+## Estrutura do repositório
 
-```txt
+```
 MBA AutoDirigido/
 ├── README.md
-├── Apresentacao.md
-├── Bibliografia.md
-├── kit-estudo-especializacao/
-│   ├── template.md
-│   └── curriculum-source/
-│       ├── prompt-curriculum.md
-│       ├── template_curriculum.md
-│       ├── curriculum-fia.md
-│       └── curriculum-cmu.md
-├── kit-estudo-certificacoes/
-│   └── template.md
-├── fia-labdata-analytics-ia-data-science/
-└── cmu-generative-ai-llms/
-```
-
-## Componentes Principais
-
-| Caminho | Função |
-|---|---|
-| `kit-estudo-especializacao/curriculum-source/prompt-curriculum.md` | Prompt para pesquisar e estruturar currículos oficiais. |
-| `kit-estudo-especializacao/curriculum-source/template_curriculum.md` | Template manual para preencher uma fonte curricular quando a pesquisa já foi feita. |
-| `kit-estudo-especializacao/template.md` | Prompt principal para gerar o kit de especialização a partir de um currículo estruturado. |
-| `kit-estudo-certificacoes/template.md` | Prompt separado para kits de certificações técnicas. |
-| `kit-estudo-especializacao/curriculum-source/curriculum-fia.md` | Currículo estruturado da FIA/Labdata. |
-| `kit-estudo-especializacao/curriculum-source/curriculum-cmu.md` | Currículo estruturado da CMU. |
-| `fia-labdata-analytics-ia-data-science/` | Kit gerado para FIA/Labdata. |
-| `cmu-generative-ai-llms/` | Kit gerado para CMU. |
-
----
-
-## Fluxo de Uso
-
-### 1. Escolher um curso de referência
-
-Defina:
-
-- nome do curso;
-- instituição;
-- URL oficial;
-- páginas complementares, como syllabus, schedule, assignments, PDFs ou ementas públicas.
-
-Exemplo:
-
-```txt
-Curso: CMU — Generative AI & Large Language Models
-Instituição: Carnegie Mellon University
-URL: https://www.cmu.edu/online/generative-ai-llms
-Complementos:
-- https://2025.cmu-llms.org/syllabus/
-- https://2025.cmu-llms.org/schedule/
-- https://2025.cmu-llms.org/assignments/
+├── docs/                                      Documentos pessoais de referência
+│   ├── Apresentacao.md
+│   └── Bibliografia.md
+├── templates/                                 Prompts (suite de personagens)
+│   ├── especializacao/
+│   │   ├── 01-prompt-curriculum.md            Pesquisador Acadêmico
+│   │   ├── 02-curriculum-schema.md            Schema canônico de curriculum.md
+│   │   ├── 03-kit-rules.md                    Regras pedagógicas transversais
+│   │   ├── 04-kit-output-schema.md            Estrutura de arquivos do kit
+│   │   ├── 05-kit-workflow.md                 Workflow de execução
+│   │   ├── 06-coordenador-curso.md            Coordenador
+│   │   ├── 07-professor-disciplina.md         Professor da Disciplina
+│   │   ├── 08-engenheiro-labs.md              Engenheiro de Laboratório
+│   │   ├── 09-banca-avaliacao.md              Banca Examinadora
+│   │   └── 10-revisor-fidelidade.md           Revisor de Fidelidade
+│   └── certificacoes/
+│       └── template.md                        Fluxo paralelo para certificações de vendor
+├── exemplos/                                  Curriculums já preenchidos como referência
+│   ├── curriculum-cmu.md
+│   └── curriculum-fia.md
+└── cursos/                                    Kits gerados
+    ├── cmu-generative-ai-llms/
+    └── fia-labdata-analytics-ia-data-science/
 ```
 
 ---
 
-### 2. Criar o currículo-fonte
+## Fluxo em 3 fases
 
-Use o prompt:
+### Fase 1 — Pesquisa
 
-```txt
-kit-estudo-especializacao/curriculum-source/prompt-curriculum.md
-```
+O **Pesquisador Acadêmico** ([01-prompt-curriculum.md](templates/especializacao/01-prompt-curriculum.md)) recebe `(curso, instituição)`, busca em fontes oficiais (WebSearch + WebFetch nativos), extrai grade, ementas, professores e publicações, e grava em `cursos/<slug>/02-curriculum.md` conforme [02-curriculum-schema.md](templates/especializacao/02-curriculum-schema.md).
 
-Objetivo desse prompt:
+Para instituições top-tier, exige ≥2 fontes oficiais corroborantes (Source Diversity Rule).
 
-- pesquisar a grade curricular oficial;
-- priorizar fontes oficiais;
-- extrair módulos, disciplinas, ementas, avaliações e bibliografia;
-- marcar campos não publicados como `Não informado`;
-- organizar tudo em Markdown.
+### Fase 2 — Coordenação
 
-Saída recomendada:
+O **Coordenador de Curso** ([06-coordenador-curso.md](templates/especializacao/06-coordenador-curso.md)) extrai a filosofia pedagógica do programa (engineering-heavy, research-heavy, systems-heavy, …) e produz a base do kit: `01-README.md`, `03-study-plan.md`, `04-weekly-roadmap.md`, `05-glossary.md`, `06-concept-map.md` e a **matriz de cobertura** (`coverage-matrix.md`).
 
-```txt
-kit-estudo-especializacao/curriculum-source/curriculum-<slug>.md
-```
+A matriz mapeia explicitamente cada semana do syllabus original para semana(s) do kit — é o gate de fidelidade da Fase 3.
 
-Exemplos atuais:
+### Fase 3 — Geração incremental por semana
 
-```txt
-kit-estudo-especializacao/curriculum-source/curriculum-fia.md
-kit-estudo-especializacao/curriculum-source/curriculum-cmu.md
-```
+Para cada semana `NN`, em loop:
 
-Regra importante: o currículo-fonte deve preservar a distinção entre:
+1. **Professor da Disciplina** ([07](templates/especializacao/07-professor-disciplina.md)) — `01-theory.md` + `02-readings.md`, adotando voz do professor real quando identificável.
+2. **Engenheiro de Labs** ([08](templates/especializacao/08-engenheiro-labs.md)) — `03-lab-guided.md` + `04-lab-speedrun.md` + `code/` com profiling e métrica-alvo.
+3. **Banca Examinadora** ([09](templates/especializacao/09-banca-avaliacao.md)) — `05-exercises.md` + `06-mini-project.md` + `07-assessment.md` (com rubrica + model answers) + `08-flashcards.md`.
+4. **Revisor de Fidelidade** ([10](templates/especializacao/10-revisor-fidelidade.md)) — `09-coverage.md` da semana e atualização da matriz; se ⚠ ou ✗, retorna para a persona apropriada.
 
-- informação publicada oficialmente;
-- complemento curricular público;
-- inferência pedagógica;
-- lacuna não publicada.
+Detalhes do fluxo em [05-kit-workflow.md](templates/especializacao/05-kit-workflow.md).
 
 ---
 
-### 3. Gerar o kit de especialização
+## Regras críticas que garantem o "clone"
 
-Use o prompt:
+Definidas em [03-kit-rules.md](templates/especializacao/03-kit-rules.md):
 
-```txt
-kit-estudo-especializacao/template.md
-```
-
-Informe explicitamente qual currículo-fonte deve ser usado:
-
-```txt
-Use o template.md e como entrada use:
-kit-estudo-especializacao/curriculum-source/curriculum-cmu.md
-```
-
-O template deve gerar apenas o **Passo 1**:
-
-```txt
-README
-curriculum
-study-plan
-weekly-roadmap
-glossary
-concept-map
-```
-
-Não gere semanas, labs, papers completos, capstone ou projetos avançados nessa etapa inicial.
+1. **Source Diversity Rule** — top-tier exige ≥2 fontes oficiais.
+2. **Professor Extraction Rule** — publicações dos profs reais viram leituras primárias.
+3. **Gap Supplementation Rule** — quando o syllabus oficial omite, suplementar com curso-irmão top-tier, sempre declarando a fonte.
+4. **Philosophy Preservation Rule** — filosofia do programa prevalece sobre preferências do aluno (o objetivo é clonar a especialização, não personalizar).
 
 ---
 
-### 4. Gerar semanas incrementalmente
+## Como rodar um novo kit
 
-Depois do Passo 1, solicite:
-
-```txt
-Generate Week 01
+```
+Crie o curriculum.md para o curso "<NOME_DO_CURSO>" da instituição "<NOME_DA_INSTITUICAO>"
+usando templates/especializacao/01-prompt-curriculum.md.
 ```
 
-ou, em português:
+Revise o `02-curriculum.md` gerado. Em seguida:
 
-```txt
-gere a primeira semana
+```
+Gere a base do kit em cursos/<slug>/ usando 06-coordenador-curso.md
+a partir de cursos/<slug>/02-curriculum.md.
 ```
 
-Cada semana deve criar apenas a pasta daquela semana.
+Revise a filosofia extraída e a matriz de cobertura. Em seguida, semana a semana:
 
-Para kits numerados, use:
-
-```txt
-modules/
-├── 01-week-01/
-├── 02-week-02/
-└── ...
+```
+Gere a semana 01 do kit cursos/<slug>/ seguindo 05-kit-workflow.md Fase 3.
 ```
 
-Dentro da semana:
-
-```txt
-01-theory.md
-02-readings.md
-03-lab-guided.md
-04-lab-speedrun.md
-05-exercises.md
-06-mini-project.md
-07-assessment.md
-08-flashcards.md
-code/
-assets/
-```
-
-Essa convenção melhora navegação e evita dúvida sobre a ordem de estudo.
+Cada semana só fecha quando o Revisor de Fidelidade aprova (✓ ou + com suplementação declarada).
 
 ---
 
-## Kits Gerados Atualmente
+## Kits existentes
 
-### FIA/Labdata — Analytics e Inteligência Artificial — Data Science
+| Slug | Programa de referência | Status |
+|---|---|---|
+| [cmu-generative-ai-llms](cursos/cmu-generative-ai-llms/01-README.md) | CMU — Generative AI & Large Language Models | Base + semana 01 (geração antiga, pré-suite) |
+| [fia-labdata-analytics-ia-data-science](cursos/fia-labdata-analytics-ia-data-science/01-README.md) | FIA / Labdata — Analytics e IA — Data Science | Base + semana 01 (geração antiga, pré-suite) |
 
-Pasta:
-
-```txt
-fia-labdata-analytics-ia-data-science/
-```
-
-Status:
-
-- Passo 1 gerado.
-- Semana 01 gerada.
-- Arquivos ainda seguem a convenção original sem prefixos numéricos nos arquivos base.
-
-Semana 01:
-
-```txt
-fia-labdata-analytics-ia-data-science/modules/week-01/
-```
-
-Tema:
-
-- Ciência de Dados, Analytics e IA.
-- Framing de problema.
-- Métrica, baseline, riscos e go/no-go.
+Esses kits foram gerados antes da reestruturação para suite de personagens — servem como base histórica e referência de output. Kits novos seguirão o fluxo completo de 6 personagens.
 
 ---
 
-### CMU — Generative AI & Large Language Models
+## Fluxo paralelo: certificações
 
-Pasta:
-
-```txt
-cmu-generative-ai-llms/
-```
-
-Status:
-
-- Passo 1 gerado.
-- Semana 01 gerada.
-- Arquivos seguem prefixos numéricos.
-
-Arquivos base:
-
-```txt
-01-README.md
-02-curriculum.md
-03-study-plan.md
-04-weekly-roadmap.md
-05-glossary.md
-06-concept-map.md
-```
-
-Semana 01:
-
-```txt
-cmu-generative-ai-llms/modules/01-week-01/
-```
-
-Tema:
-
-- Diagnóstico técnico.
-- Setup.
-- PyTorch/Hugging Face readiness.
-- Tokenização mínima.
-- Tensorização.
-- Cross-entropy, softmax, perplexity e next-token prediction.
-
----
-
-## Como Usar Cada Kit
-
-Para cada kit, siga esta ordem:
-
-1. Leia o `README`.
-2. Leia o `curriculum`.
-3. Leia o `study-plan`.
-4. Consulte o `weekly-roadmap`.
-5. Use o `glossary` como referência contínua.
-6. Consulte o `concept-map` para entender relações entre conceitos.
-7. Entre na semana atual em `modules/`.
-8. Siga a ordem dos arquivos da semana.
-9. Execute os labs.
-10. Complete assessment e flashcards.
-11. Só então gere a próxima semana.
-
-Regra prática: não avance semana se você não produziu o entregável técnico da semana atual.
-
----
-
-## Critérios de Qualidade
-
-Todo material gerado deve seguir estes critérios:
-
-- usar fontes oficiais, papers ou documentação primária;
-- separar fato oficial de inferência;
-- incluir teoria, implementação, arquitetura, tradeoffs e limitações;
-- exigir código ou artefato técnico quando aplicável;
-- incluir avaliação, failure modes e custo computacional;
-- evitar conteúdo superficial, motivacional ou tutorial trivial;
-- priorizar projetos acumulativos e defesa técnica.
-
----
-
-## Convenções Recomendadas
-
-### Currículos-fonte
-
-```txt
-kit-estudo-especializacao/curriculum-source/curriculum-<instituicao-ou-curso>.md
-```
-
-Exemplos:
-
-```txt
-curriculum-cmu.md
-curriculum-fia.md
-```
-
-### Kits gerados
-
-```txt
-<slug-do-programa>/
-```
-
-Exemplos:
-
-```txt
-cmu-generative-ai-llms/
-fia-labdata-analytics-ia-data-science/
-```
-
-### Arquivos base numerados
-
-Para novos kits, prefira:
-
-```txt
-01-README.md
-02-curriculum.md
-03-study-plan.md
-04-weekly-roadmap.md
-05-glossary.md
-06-concept-map.md
-```
-
-### Semanas numeradas
-
-```txt
-modules/01-week-01/
-modules/02-week-02/
-modules/03-week-03/
-```
-
-### Arquivos internos da semana
-
-```txt
-01-theory.md
-02-readings.md
-03-lab-guided.md
-04-lab-speedrun.md
-05-exercises.md
-06-mini-project.md
-07-assessment.md
-08-flashcards.md
-```
-
----
-
-## Próximos Passos de Melhoria
-
-### 1. Atualizar o `template.md` para aceitar fonte parametrizada
-
-Hoje o template menciona `curriculum.md` como fonte padrão, mas na prática já usamos múltiplas fontes:
-
-```txt
-curriculum-fia.md
-curriculum-cmu.md
-```
-
-Melhoria:
-
-```txt
-<<CURRICULUM_SOURCE_FILE>>
-```
-
-Exemplo:
-
-```txt
-<<CURRICULUM_SOURCE_FILE>> = kit-estudo-especializacao/curriculum-source/curriculum-cmu.md
-```
-
----
-
-### 2. Incorporar oficialmente a convenção de numeração
-
-Adicionar ao template principal:
-
-- arquivos base com prefixos `01-`, `02-`, etc.;
-- semanas como `01-week-01`;
-- arquivos internos da semana numerados.
-
-Isso deve virar regra padrão para todos os novos kits.
-
----
-
-### 3. Criar um `status.md` por kit
-
-Cada kit pode ter:
-
-```txt
-00-status.md
-```
-
-Com:
-
-- semanas geradas;
-- semanas concluídas;
-- labs executados;
-- pendências;
-- próximos comandos recomendados.
-
----
-
-### 4. Criar validação automática de estrutura
-
-Adicionar script para checar:
-
-- arquivos obrigatórios do Passo 1;
-- estrutura de cada semana;
-- presença de `code/` e `assets/`;
-- links quebrados internos;
-- placeholders `TODO` ou `<<...>>` não resolvidos.
-
-Sugestão:
-
-```txt
-tools/validate-kit.py
-```
-
----
-
-### 5. Criar templates reutilizáveis para semanas
-
-Criar:
-
-```txt
-kit-estudo-especializacao/templates/week/
-```
-
-Com arquivos vazios ou parcialmente preenchidos:
-
-```txt
-01-theory.md
-02-readings.md
-03-lab-guided.md
-04-lab-speedrun.md
-05-exercises.md
-06-mini-project.md
-07-assessment.md
-08-flashcards.md
-```
-
----
-
-### 6. Melhorar geração de papers
-
-Criar uma pasta por kit:
-
-```txt
-papers/
-├── 01-weekly-papers.md
-├── 02-paper-review-template.md
-└── 03-paper-reading-guide.md
-```
-
-Cada semana deve ter 2-5 papers:
-
-- seminal;
-- foundational;
-- SOTA relevante;
-- systems paper quando houver impacto operacional.
-
----
-
-### 7. Adicionar exportação Anki
-
-Além de `flashcards.md`, gerar:
-
-```txt
-flashcards.csv
-```
-
-Formato:
-
-```csv
-frente;verso;tags
-```
-
----
-
-### 8. Separar ambientes por kit
-
-Cada kit pode ter:
-
-```txt
-environment/
-├── requirements.txt
-├── requirements-gpu.txt
-├── environment.yml
-└── setup.md
-```
-
-Isso evita misturar dependências de Data Science clássico, LLM systems e multimodal.
-
----
-
-### 9. Versionar decisões pedagógicas
-
-Criar:
-
-```txt
-decision-log.md
-```
-
-Para registrar:
-
-- por que o plano tem 48 ou 64 semanas;
-- por que um paper foi escolhido;
-- quais tópicos foram inferidos;
-- quais fontes oficiais não publicaram detalhes.
-
----
-
-### 10. Gerar capstone desde o início
-
-Mesmo que o capstone só seja implementado no fim, criar cedo:
-
-```txt
-capstone/
-├── 01-proposal.md
-├── 02-milestones.md
-├── 03-technical-spec.md
-├── 04-evaluation-rubric.md
-├── 05-final-report-template.md
-└── 06-defense-template.md
-```
-
-Assim cada semana pode alimentar o projeto final.
-
----
-
-## Comandos Úteis Para Continuação
-
-Gerar próxima semana do CMU:
-
-```txt
-gere a segunda semana do kit cmu-generative-ai-llms seguindo a convenção numerada
-```
-
-Gerar próxima semana do FIA:
-
-```txt
-gere a segunda semana do kit fia-labdata-analytics-ia-data-science
-```
-
-Criar novo currículo-fonte:
-
-```txt
-use prompt-curriculum.md para criar curriculum-<slug>.md do curso <nome> da instituição <instituição>
-```
-
-Criar novo kit:
-
-```txt
-use template.md com entrada curriculum-<slug>.md e gere somente o Passo 1 com arquivos numerados
-```
-
----
-
-## Regra Central
-
-Este repositório deve crescer incrementalmente. Primeiro fonte curricular, depois kit base, depois semanas uma por uma. A qualidade vem de manter o ciclo pequeno, verificável e tecnicamente defensável.
+O subprojeto [templates/certificacoes/](templates/certificacoes/template.md) cobre o caso de certificações de vendor (AZ-204, AWS-SAA, CKA, GH-200, TF-Associate, …). É um fluxo separado, com escopo e regras próprias, mas mora no mesmo repo.
