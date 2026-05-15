@@ -1,6 +1,6 @@
 # MBA AutoDirigido
 
-Clones autodidatas de especializações de pós-graduação top-tier (Harvard, MIT, Stanford, CMU, Berkeley, FIA, …) gerados por uma suite de prompts.
+Clones autodidatas de especializações de pós-graduação top-tier (Harvard, MIT, Stanford, CMU, Berkeley …) gerados por uma suite de prompts.
 
 Dado um par `(curso, instituição)`, o fluxo produz um kit de estudos com profundidade equivalente à pós-graduação original, baseado em fontes oficiais, com gate de fidelidade explícito.
 
