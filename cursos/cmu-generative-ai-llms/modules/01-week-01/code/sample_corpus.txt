@@ -1,5 +1,0 @@
-Large language models estimate probabilities over token sequences.
-Tokenization maps raw text into discrete units before tensorization.
-PyTorch tensors carry numeric representations through a computation graph.
-Cross entropy penalizes low probability assigned to the correct next token.
-Perplexity summarizes average uncertainty but does not measure factuality.

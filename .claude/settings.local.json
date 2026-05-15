@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($fia = \"cursos/fia-labdata-analytics-ia-data-science\"; git mv \"$fia/README.md\" \"$fia/01-README.md\"; git mv \"$fia/curriculum.md\" \"$fia/02-curriculum.md\"; git mv \"$fia/study-plan.md\" \"$fia/03-study-plan.md\"; git mv \"$fia/weekly-roadmap.md\" \"$fia/04-weekly-roadmap.md\"; git mv \"$fia/glossary.md\" \"$fia/05-glossary.md\"; git mv \"$fia/concept-map.md\" \"$fia/06-concept-map.md\"; Get-ChildItem \"$fia\" | ForEach-Object { $_.Name })",
+      "PowerShell(\"---\")",
+      "WebFetch(domain:www.cmu.edu)",
+      "WebFetch(domain:2025.cmu-llms.org)",
+      "WebSearch",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}
