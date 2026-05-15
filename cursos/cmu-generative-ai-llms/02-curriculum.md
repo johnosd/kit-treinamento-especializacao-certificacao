@@ -501,7 +501,14 @@ Não informado publicamente no site do certificado. O curso regular (11-777) tem
 
 # Filosofia Pedagógica Extraída
 
-> **Não preencher na fase de pesquisa.** Esta seção é responsabilidade do Coordenador de Curso (`06-coordenador-curso.md`), que deriva a filosofia a partir do material que o Pesquisador coletou.
+**Engineering-heavy com orientação a research engineering**, organizado em stack vertical de três cursos: algoritmos (11-967) → sistemas distribuídos (11-968) → multimodalidade (11-977).
+
+**Evidências diretas:**
+1. **11-967**: 4 dos 6 assignments exigem implementação PyTorch/HuggingFace — Assignment #2 constrói transformer do zero, #3 implementa pipeline RAG com tool use, #4 otimiza eficiência de treinamento. Bibliografia ≈80% papers arXiv/ACL/NeurIPS + ≈15% docs oficiais (HuggingFace, vLLM), <5% livro-texto (apenas Jurafsky Ch. 7 como referência de background).
+2. **11-968**: curso inteiramente dedicado a GPU programming e distributed systems — zero casos empresariais; leituras incluem DeepSpeed/ZeRO, FlashAttention, PagedAttention, SGLang.
+3. **11-977**: único curso com formalismo matemático denso (deep CCA, tensor fusion, mutual information) — research-heavy dentro do trio.
+
+**Sequência didática:** implementação concreta antes da teoria formal (tokenização → arquitetura → formalismo de atenção). **Avaliação:** implementação reprodutível (40%) + exames teóricos (40%) + mini-project com apresentação (20%). **Zero** business cases ou foco em produtos. **Perfil de egresso declarado:** research engineer / LLM systems engineer.
 
 ---
 
