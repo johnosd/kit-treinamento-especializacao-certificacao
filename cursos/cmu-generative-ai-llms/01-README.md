@@ -66,27 +66,147 @@ Ao concluir o kit, o aluno será capaz de:
 
 ## Workflow semanal
 
+### Visão geral: 5 sessões por semana
+
+Uma semana é composta de **4 a 5 sessões de 2–2.5h** cada. Nunca menos de 2h (não aquece), nunca mais de 3h seguidas (retorno marginal cai sensivelmente após esse ponto). Total: ~12h/semana.
+
 ```
-Início da semana:
-  01-theory.md          → leitura ativa + anotações (2h)
-  02-readings.md        → papers com roteiro de anotação (3h)
-
-Meio da semana:
-  03-lab-guided.md      → implementação passo a passo (2.5h)
-  04-lab-speedrun.md    → re-execução autônoma (1.5h)
-
-Final da semana:
-  05-exercises.md       → exercícios técnicos (1h)
-  06-mini-project.md    → entrega incremental do projeto (1h)
-  07-assessment.md      → rubrica de autoavaliação
-  08-flashcards.md      → revisão espaçada (0.5h)
+Dia 1 │ Sessão 1: 01-theory.md                              [2.5h]
+Dia 2 │ Sessão 2: 02-readings.md (papers obrigatórios)      [3h]
+Dia 3 │ Sessão 3: 03-lab-guided.md + código                 [2.5h]
+Dia 4 │ Sessão 4: 05-exercises.md (3 exercícios mínimos)    [2h]
+Dia 5 │ Sessão 5: 07-assessment.md + protocolo de fechamento[2h]
 ```
 
-**Regra de avanço (não avance para S+1 sem):**
-- [ ] Lab `03-` + `04-` executado sem erros críticos.
-- [ ] Rubrica `07-assessment.md` preenchida com ≥80% dos critérios `✓`.
-- [ ] Deliverable da semana registrado no `coverage-matrix.md`.
-- [ ] Flashcards `08-` adicionados ao deck de revisão espaçada.
+---
+
+### Sessão 1 — Teoria (2.5h)
+
+**Abrir:** `modules/NN-week-NN/01-theory.md`
+
+Leitura ativa — não passiva. Para cada seção principal:
+
+1. Leia a seção inteira.
+2. Feche o arquivo.
+3. Escreva no papel (físico) a fórmula ou conceito central daquela seção — de memória.
+4. Se não conseguir, releia. Compare.
+
+**Ordem:** Contexto → Fundamentos formais → Arquitetura → Tradeoffs → Implementação de referência → Síntese.
+
+Leia o código da **Implementação de referência** linha a linha. Para cada linha não óbvia, escreva no papel o que ela faz e *por que* aquela decisão foi tomada.
+
+Ao final: abra `08-flashcards.md` e leia (apenas leia, sem active recall) os cards da categoria **Conceitos** para orientação do que vem pela frente.
+
+**Sinal de sessão bem-feita:** você consegue escrever a fórmula central da semana e explicar a decisão de design principal sem consultar nada.
+
+---
+
+### Sessão 2 — Readings (2.5–3h)
+
+**Abrir:** `modules/NN-week-NN/02-readings.md`
+
+Leia as obrigatórias na ordem listada. Para cada paper:
+
+- Leia com caneta/anotações digitais.
+- Foque nas seções indicadas no roteiro (não leia o paper inteiro na primeira passagem).
+- Após cada leitura, responda no papel as **perguntas de foco** listadas no `02-readings.md`. Se não conseguir responder uma pergunta, releia a seção relevante.
+
+**Sinal de sessão bem-feita:** você consegue responder as perguntas de foco de cada reading sem consultar o paper.
+
+---
+
+### Sessão 3 — Lab Guiado (2.5h)
+
+**Abrir em dois painéis:** `modules/NN-week-NN/03-lab-guided.md` (esquerda) + script de código (direita).
+
+```bash
+cd modules/NN-week-NN/code
+pip install -r requirements.txt
+python 01_environment_check.py
+```
+
+**Regra de ouro:** leia o passo do `03-lab-guided.md` antes de executar o código correspondente. Nunca execute sem ter lido a explicação — você está executando para confirmar um entendimento, não para descobrir o que acontece.
+
+Se um passo produz `FAIL` ou output inesperado: **pare**. Não avance com resultado errado. Consulte a seção Troubleshooting do passo atual.
+
+Ao final: preencha `assets/NN-lab-report.md` com os valores reais medidos. Sem números reais, o lab não está concluído.
+
+Estude os cards de **Fórmulas** do `08-flashcards.md` ao final desta sessão.
+
+---
+
+### Sessão 4 — Exercícios (2h)
+
+**Abrir:** `modules/NN-week-NN/05-exercises.md`
+
+Selecione no mínimo 3 exercícios. O exercício de **debugging** é sempre obrigatório. Tente cada exercício sem consultar nada por 20–30 minutos. Se travado após 30 minutos, consulte a seção relevante do `01-theory.md` — mas não busque a solução diretamente.
+
+Escreva o entregável no local especificado (`code/exercises/` ou `assets/`). Verifique os critérios de pass listados.
+
+Ao final: estude os cards de **Arquitetura** e **Pitfalls** do `08-flashcards.md` em active recall (cubra o verso, responda, revele).
+
+---
+
+### Sessão 5 — Assessment + Fechamento (2h)
+
+**Parte 1 — Assessment (1h15):**
+
+```
+Abrir: modules/NN-week-NN/07-assessment.md
+```
+
+Feche todos os outros arquivos. Configure um timer de **1 hora**. Responda todas as questões como exame real — sem consultar nada. Ao fim do timer, abra as rubricas e model answers. Para cada questão: aplique a rubrica, anote o nível (A+/A/B/C/F) e o que especificamente você acertou e errou.
+
+**Parte 2 — Protocolo de fechamento da semana (45min):**
+
+**① Lab report:** `assets/NN-lab-report.md` com todos os campos preenchidos com valores reais. Sem aproximações.
+
+**② Gaps pessoais:** se ficou abaixo de A em ≥ 2 questões do assessment, registre o gap:
+```
+assets/gaps-pessoais.md
+→ "SNN: [Q?] — gap em [tópico] — rever [seção do theory.md]"
+```
+
+**③ Flashcards — deck completo:** todos os cards da semana em active recall. Marque os que errou para revisão espaçada mais frequente. Se usa Anki, importe agora.
+
+**④ Coverage matrix:**
+```
+Abrir: coverage-matrix.md
+→ Confirmar que a linha da semana está ✓ coberto (ou ⚠ raso se você identificou gap)
+```
+
+**⑤ Mini-project:** confirmar que `assets/mini-project-report.md` existe com entregável mínimo. Se não, é débito técnico — complete antes de avançar.
+
+---
+
+### Regra de avanço
+
+**Não passe para S+1 sem:**
+
+- [ ] `assets/NN-lab-report.md` preenchido com métricas reais (não estimadas).
+- [ ] Assessment com nota média ≥ B — você entende os fundamentos, mesmo que incompleto em detalhes.
+- [ ] Todos os 20 flashcards revisados pelo menos uma vez em active recall.
+- [ ] Mini-project com entregável mínimo funcionando.
+- [ ] Linha da semana em `coverage-matrix.md` atualizada (não `⏳ pendente`).
+
+Se não bateu o critério: **repita a sessão fraca**, não a semana toda.
+Gap em teoria → refaça a Sessão 1. Gap no lab → refaça a Sessão 3. Gap em conceitos do assessment → releia a seção específica do `01-theory.md` e refaça as questões correspondentes.
+
+---
+
+### O que o estudo parece "por dentro"
+
+Este kit não é MOOC — você não consome passivamente. Cada sessão produz um artefato:
+
+| Sessão | Artefato produzido |
+|---|---|
+| Teoria | Fórmulas escritas à mão; síntese sem consulta |
+| Readings | Respostas às perguntas de foco de cada paper |
+| Lab | `assets/NN-lab-report.md` com números reais medidos |
+| Exercícios | Código em `code/exercises/` + análise em `assets/` |
+| Assessment | Rubrica auto-aplicada com nível por questão + gaps registrados |
+
+Se você chegou ao fim da semana sem nenhum desses artefatos, você leu — mas não estudou.
 
 ---
 

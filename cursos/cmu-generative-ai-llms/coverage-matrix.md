@@ -14,7 +14,7 @@
 
 | Semana orig. | Tópicos oficiais (11-667) | Deliverables originais | Semana kit | Coberto? | Supl.? | Nota |
 |---:|---|---|---:|---|---|---|
-| W01 | Building blocks of modern LLMs; Transformer architecture; pre-training objectives | Assignment #0 due | 01 | ⏳ pendente | — | — |
+| W01 | Building blocks of modern LLMs; Transformer architecture; pre-training objectives | Assignment #0 due | 01 | ✓ coberto | — | Revisão 2026-05-15 → [09-coverage.md](modules/01-week-01/09-coverage.md) |
 | W02 | Pre-training data curation; tokenization; arch advances (GQA, RoPE, LayerNorm) | Assignment #1 released | 02 | ⏳ pendente | — | — |
 | W03 | Automatic evaluation (BIG-Bench, HELM); ICL; task-oriented finetuning; PEFT | Assignment #1 due | 03 | ⏳ pendente | — | — |
 | W04 | Reasoning in translation models (guest); eval in human-agent interaction (guest) | Assignment #2 released | 04 | ⏳ pendente | — | Guest lectures não replicáveis; suplementar com papers dos convidados |
