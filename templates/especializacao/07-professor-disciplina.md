@@ -14,9 +14,9 @@
 
 ## Outputs
 
-Em `cursos/<slug>/modules/NN-week-NN/`:
+Em `cursos/<slug>/modules/NN-week-NN/` (ou `modules/00-prereq-NN/` quando invocado pelo Tutor):
 
-1. `01-theory.md`
+1. `01-theory.md` (default) ou `01-theory.ipynb` (quando aprender-fazendo serve — ver V2 abaixo)
 2. `02-readings.md`
 
 ---
@@ -47,9 +47,13 @@ Se o `coverage-matrix.md` marca a semana como `supplemented`:
 - Use a fonte de suplementação registrada pelo Coordenador (curso-irmão top-tier, paper canônico, ou capítulo do livro-texto).
 - **Declare a suplementação no topo do `01-theory.md`** seguindo o padrão de `03-kit-rules.md` §4.3.
 
-### Passo 4 — Escrever `01-theory.md`
+### Passo 4 — Escrever `01-theory.md` (Theory-as-pointers, V2)
 
-Estrutura mínima:
+**Antes de escrever**: identificar se existe **livro-texto canônico** que cobre o tópico (Goodfellow & Bengio 2016 para Deep Learning; Murphy 2022 para ML probabilístico; Jurafsky & Martin para NLP; Géron 2019 para ML aplicado; Bishop 2006 para PRML; …).
+
+#### Caso A — Existe livro canônico (regra default V2)
+
+Estrutura compacta com cap de **300–600 palavras de texto próprio**:
 
 ```markdown
 # Semana NN — <Tema>
@@ -60,48 +64,47 @@ Estrutura mínima:
 > **Fonte primária:** <papers ou docs principais da semana>
 > (se supplemented) **Suplementado de:** <curso/paper/livro> — **Razão:** <…> — **URL:** <…>
 
-## Contexto e motivação
+## Contexto e intuição (200–400 palavras)
 
-Por que este tópico existe? Qual problema ele resolve? Qual a linhagem histórica? (Se research-heavy, citar o paper que originou; se engineering-heavy, citar o problema de produção que ele resolve.)
+Por que este tópico existe? Qual problema ele resolve? Como conecta com o que foi visto antes e o que vem em seguida? Linguagem clara, sem derivações longas.
 
-## Fundamentos formais
+## Pontos críticos para o lab (1–2 derivações)
 
-Matemática, definições, notação. Use LaTeX inline (`$...$`) e display (`$$...$$`). Não pule derivações importantes.
+Quando o aluno vai implementar X no notebook desta semana, ele precisa entender Y. Apenas as 1–2 fórmulas/passos críticos para a prática. Use LaTeX inline. Resto fica para o livro.
 
-## Arquitetura e componentes
+## Leituras canônicas (capítulos)  ← BLOCO OBRIGATÓRIO
 
-Diagrama Mermaid + explicação por componente. Inputs, outputs, contratos.
+Apontar capítulo/seção/páginas específicas. Incluir tempo estimado.
 
-## Tradeoffs
+- **Goodfellow et al. 2016**, *Deep Learning*, cap. 6 §6.2–6.4, pp. 168–195. — 90 min.
+- **Vaswani et al. 2017**, *Attention Is All You Need*, §3.1–3.3. — 45 min.
+- **(opcional)** Jurafsky & Martin 3ª ed., cap. 9 §9.7. — 30 min.
 
-Lista comparativa: alternativas conhecidas + quando usar cada uma. Sempre com referência (paper ou benchmark).
-
-## Limitações e failure modes
-
-Onde o método falha? Que dados destroem o resultado? Que escala derruba o sistema? Citar evidências (papers que reportaram failure, posts oficiais de incidente).
-
-## Scaling e custo
-
-Custo computacional (FLOPs, memória, latência). Quando aplicável: como escala com tamanho de modelo, batch, sequência.
-
-## Implementação de referência
-
-Snippet em Python/PyTorch (ou stack do programa) executável, com comentários técnicos. Não pseudocódigo — código real, copiável.
+❌ **Não escreva**: "leia Goodfellow capítulo 6".
+✅ **Escreva**: "Goodfellow 2016, cap. 6 §6.2 (pp. 170–178) — derivação do gradiente; §6.4 (pp. 188–195) — regularização."
 
 ## Conexão com semanas anteriores e futuras
 
-Como esta semana se apoia em N-1, N-2; o que ela prepara para N+1.
+Como esta semana se apoia em N-1; o que ela prepara para N+1.
 
-## Síntese (≤ 150 palavras)
+## Síntese (≤ 100 palavras)
 
-Resumo executivo para revisão rápida.
+Resumo executivo de uma tela para revisão rápida.
 ```
 
-Profundidade alvo por seção:
+#### Caso B — Sem livro canônico (paper de research recente, tópico de fronteira)
 
-- Contexto + Fundamentos: 600–1200 palavras combinadas para temas avançados.
-- Arquitetura, Tradeoffs, Limitações, Scaling: 300–500 palavras cada.
-- Implementação de referência: 30–80 linhas de código com comentários densos.
+Declarar no topo:
+
+```markdown
+> **Sem livro canônico identificado** — teoria escrita por extenso a partir de papers primários.
+```
+
+E aí escreva denso como na V1: Contexto + Fundamentos formais + Arquitetura + Tradeoffs + Limitações + Scaling + Implementação de referência + Síntese. Profundidade alvo: 600–1200 palavras combinadas em Contexto + Fundamentos; 300–500 por seção restante.
+
+#### Caso C — Tópico "aprende fazendo" (feature engineering, EDA, transformações)
+
+Escrever como `01-theory.ipynb` em vez de `.md`. Estrutura FIA-style: célula markdown curta (200–400 palavras) → célula de código demonstrando → célula markdown interpretando → repete. Mesmo bloco obrigatório `## Leituras canônicas (capítulos)` no topo do notebook.
 
 ### Passo 5 — Escrever `02-readings.md`
 
@@ -144,7 +147,9 @@ Regras para `02-readings.md`:
 ## Anti-padrões específicos do Professor
 
 - ❌ Usar voz neutra "Claude" quando há professor real identificado. Adote a linha do prof real.
-- ❌ Pular a Implementação de Referência porque "é coisa do Eng. de Labs". Não — Eng-Labs aprofunda em lab guiado; o Professor mostra o snippet canônico na teoria.
+- ❌ **Reescrever o livro-texto.** Quando existe livro canônico, aponte páginas; não duplique o conteúdo. (Theory-as-pointers, `03-kit-rules.md` §4.5.)
+- ❌ Pular o bloco `## Leituras canônicas (capítulos)` no Caso A. É obrigatório com páginas/seções específicas, não apenas "leia Goodfellow".
+- ❌ Estourar o cap de 600 palavras no Caso A sem ter declarado Caso B explicitamente.
 - ❌ Escrever ementa rasa quando o original é denso. Se o syllabus original tem 4 papers obrigatórios, o `02-readings.md` da semana correspondente também tem 4 (ou substitutos justificados).
 - ❌ Esquecer a seção "Síntese". Ela é o que o aluno relê na revisão semanal.
-- ❌ Inventar paper. Se a referência não está confirmada, não cite.
+- ❌ Inventar paper, livro ou número de página. Se a referência não está confirmada (você não consultou o sumário do livro), não cite.

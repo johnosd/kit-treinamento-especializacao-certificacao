@@ -86,6 +86,26 @@ Se a semana usa suplementação:
 - O conteúdo da semana é coerente com a filosofia extraída? (Programa research-heavy não deveria ter semana 100% lab. Programa engineering-heavy não deveria ter semana só de leitura crítica.)
 - A voz do professor real (quando aplicável) aparece nas escolhas de referência?
 
+### Passo 6.5 — Auditar regras V2 (Theory-as-pointers + Notebook-first)
+
+#### Theory-as-pointers (`03-kit-rules.md` §4.5)
+
+- Existe livro canônico identificável para o tópico desta semana?
+  - **Sim** → o `01-theory.md` tem cap respeitado (300–600 palavras de texto próprio)? Bloco `## Leituras canônicas (capítulos)` presente com **páginas/seções específicas** (não só título)? Tempo estimado por capítulo declarado?
+  - **Não** → o `01-theory.md` declara explicitamente no topo `> Sem livro canônico identificado`? Texto denso é aceitável neste caso.
+- Páginas citadas são plausíveis? (Se você não confirma o sumário do livro, marcar como suspeita.)
+- ❌ Sinais de violação: "leia Goodfellow capítulo 6" sem páginas; cap excedido sem declaração Caso B; livro citado sem ISBN/edição quando há ambiguidade.
+
+#### Notebook-first practice (`03-kit-rules.md` §4.6)
+
+- `03-lab-guided` é `.ipynb` (não `.md`)?
+- Notebook tem kernel spec declarado (Python 3.x)?
+- `requirements.txt` está no mesmo `code/`?
+- Outputs preservados após execução? (Notebook "limpo" sem outputs → violação.)
+- Seeds fixados quando há randomness?
+- Células curtas? (Markdown ≤ 500 palavras por célula; código ≤ 30 linhas por célula.)
+- Estrutura FIA-style respeitada (markdown → code → markdown → repete)?
+
 ### Passo 7 — Escrever `09-coverage.md`
 
 Estrutura:
@@ -127,6 +147,24 @@ Estrutura:
 
 <consistente / inconsistente — explicar>
 
+## Auditoria V2 — Theory-as-pointers
+
+- Livro canônico identificado: <sim/não>
+- Caso aplicado: A (com livro) | B (sem livro, declarado) | C (notebook de aprende-fazendo)
+- Cap respeitado (Caso A): <sim/não — N palavras>
+- Bloco `## Leituras canônicas (capítulos)` presente com páginas: <sim/não>
+- Páginas plausíveis: <sim/não/suspeita — detalhar>
+
+## Auditoria V2 — Notebook-first practice
+
+- `03-lab-guided.ipynb` (não `.md`): <sim/não>
+- Kernel spec declarado: <sim/não>
+- `requirements.txt` no `code/`: <sim/não>
+- Outputs preservados: <sim/não>
+- Seeds fixados: <sim/não/N/A>
+- Células curtas: <sim/não — listar violações>
+- Estrutura md→code→md respeitada: <sim/não>
+
 ## Gap actions
 
 Numeradas, com persona responsável e descrição precisa do retrabalho:
@@ -160,3 +198,7 @@ Localize a linha da semana N e atualize:
 - ❌ Ser leniente com profundidade ("está OK pro nível autodidata"). O padrão é o programa original, não "OK pro autodidata".
 - ❌ Esquecer de atualizar `coverage-matrix.md` (deixa estado inconsistente).
 - ❌ Não verificar URL/DOI de referências citadas. Inventar referência é falha catastrófica de fidelidade.
+- ❌ **Aceitar `01-theory.md` que reescreve o livro quando há livro canônico** — viola Theory-as-pointers (§4.5).
+- ❌ **Aceitar `03-lab-guided.md` em vez de `.ipynb`** — viola Notebook-first practice (§4.6).
+- ❌ **Aceitar notebook sem outputs preservados** — entrega "código fonte", não documentação executável.
+- ❌ Não verificar páginas/seções de livro citadas. Inventar paginação é tão grave quanto inventar paper.

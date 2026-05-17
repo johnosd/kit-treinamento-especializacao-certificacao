@@ -14,11 +14,11 @@
 
 ## Outputs
 
-Em `cursos/<slug>/modules/NN-week-NN/`:
+Em `cursos/<slug>/modules/NN-week-NN/` (ou `modules/00-prereq-NN/`):
 
-1. `03-lab-guided.md`
-2. `04-lab-speedrun.md`
-3. `code/` (scripts numerados + `requirements.txt` + dataset spec)
+1. `03-lab-guided.ipynb` — **default V2: Jupyter notebook executável** (FIA-style: markdown ↔ código ↔ interpretação)
+2. `04-lab-speedrun.md` — continua `.md`, referência condensada para revisão
+3. `code/` — scripts auxiliares numerados + `requirements.txt` + dataset spec, quando o notebook precisa de módulos externos
 
 ---
 
@@ -42,67 +42,64 @@ Princípios:
 - **Incrementalidade**: o lab da semana N pode evoluir um artefato da semana N-1, evitando setup repetido.
 - **Profiling obrigatório quando aplicável**: tempo de execução, memória, GPU usage. Aluno deve interpretar números, não só rodar.
 
-### Passo 3 — Escrever `03-lab-guided.md`
+### Passo 3 — Escrever `03-lab-guided.ipynb` (FIA-style, V2)
 
-Estrutura:
+O lab guiado agora é um **Jupyter notebook executável**, não um Markdown narrativo. O aluno aprende fazendo: lê pouca prosa → roda código → interpreta output → próximo passo.
+
+#### Estrutura do notebook
+
+Cada notebook começa com um bloco de metadados (célula markdown):
 
 ```markdown
-# Lab Guiado — Semana NN
+# Lab Guiado — Semana NN: <Tema>
 
-> Estimativa: <X horas, considerando setup + execução + análise>
-> Pré-requisitos: <semanas anteriores; ferramentas instaladas>
-> Ambiente: <local CPU | local GPU | Colab | cloud>
-
-## Objetivo
-
-1 parágrafo: o que o aluno terá construído ao final.
-
-## Resultado esperado
-
-Quantitativo: número-alvo (perplexity ≤ X, latência ≤ Y ms p99, accuracy ≥ Z%). Sem isso, o lab vira "rodou sem erro" — insuficiente.
-
-## Setup
-
-Comandos exatos:
-
-```bash
-cd modules/NN-week-NN/code
-pip install -r requirements.txt
-python 01_<setup_script>.py
+> **Estimativa:** <X horas, incluindo setup + execução + análise>
+> **Pré-requisitos:** <semanas anteriores; libs instaladas>
+> **Ambiente:** <local CPU | local GPU | Colab | cloud>
+> **Resultado esperado:** <número-alvo quantitativo: perplexity ≤ X, latência ≤ Y ms p99, accuracy ≥ Z%>
 ```
 
-Cheque de sanidade: 1 comando que falha rápido se o ambiente está errado.
+Seguido de blocos repetidos no padrão **markdown → code → markdown**:
 
-## Passos
+1. **Célula markdown — Conceito (200–400 palavras)**: explica *por que* este passo existe, qual decisão técnica está em jogo, qual paper/doc justifica.
+2. **Célula de código — Execução**: código real (não pseudocódigo), com comentários técnicos. Imports, transformações, treinos, evals. Output preservado após execução.
+3. **Célula markdown — Interpretação**: o que esses números/gráficos significam? bate com o esperado? qual hipótese se confirmou?
 
-### Passo 1 — <nome curto>
+Repita por etapa do lab. 4–8 etapas é o range saudável.
 
-**Objetivo**: 1 frase.
-**Código**: ponteiro para `code/02_<script>.py` linhas X–Y.
-**O que está acontecendo**: 3–5 parágrafos explicando *por que* cada decisão técnica foi feita. Não comente "o código faz Y" — explique "essa decisão de Y vem de Z paper / problema de produção W".
-**Verificação**: comando + output esperado.
-**Troubleshooting**: 2–3 erros típicos + correção.
+#### Setup (primeira célula de código)
 
-Repita por passo. 4–8 passos é o range saudável.
+```python
+# Setup
+!pip install -q -r requirements.txt
+import torch, numpy as np, random
+torch.manual_seed(42); np.random.seed(42); random.seed(42)
+print("ENV OK", torch.__version__, torch.cuda.is_available())
+```
 
-## Profiling
+Tem que falhar rápido se o ambiente está errado.
 
-- Como medir tempo de execução / memória.
-- Comandos exatos (`time`, `nvidia-smi`, `torch.cuda.memory_summary`, `py-spy`, etc.).
-- Tabela de números esperados em hardware de referência (ex: "RTX 4090 + 32GB RAM: forward pass ~12ms para batch 16").
+#### Profiling (célula dedicada quando aplicável)
 
-## Interpretação de resultados
+Mensurar tempo, memória, GPU usage. Comandos: `%timeit`, `torch.cuda.memory_summary()`, `nvidia-smi`, `py-spy`. Sempre acompanhado de célula markdown de interpretação ("RTX 4090: forward pass ~12ms para batch 16 — bate com o esperado").
 
-O aluno escreve em `assets/<NN>-<lab>-report.md` (template criado neste passo) respondendo: o número bate com o esperado? Se não, qual hipótese? Qual experimento isola a causa?
+#### Failure modes (célula final)
 
-## Failure modes observados
+Bloco markdown listando erros reais que aparecem em runs (OOM, NaN loss, divergência) com diagnóstico. Pode incluir célula de código demonstrando intencionalmente um erro + recuperação.
 
-Lista de erros reais que aparecem em runs (OOM, NaN loss, divergência, etc.) + diagnóstico.
-
-## Próximo passo
+#### Próximo passo (célula markdown final)
 
 Como esse lab alimenta a semana N+1 ou o capstone.
-```
+
+#### Qualidade do notebook (checklist obrigatório)
+
+- ✅ Kernel Python 3.x declarado.
+- ✅ `requirements.txt` no mesmo `code/` (versões pinned).
+- ✅ Outputs preservados após execução (não notebook "limpo"). Isso vira documentação executável.
+- ✅ Seeds fixados para reprodutibilidade.
+- ✅ Cells curtas (≤ 30 linhas de código por célula). Quebrar em múltiplas células quando passa disso.
+- ✅ Sem `print` debug — usar comentário explicando.
+- ✅ Tipagem em funções públicas quando aplicável.
 
 ### Passo 4 — Escrever `04-lab-speedrun.md`
 
@@ -160,6 +157,10 @@ Criar templates em `modules/NN-week-NN/assets/` quando o lab pede que o aluno pr
 
 ## Anti-padrões específicos do Eng-Labs
 
+- ❌ **Entregar `03-lab-guided.md` em vez de `.ipynb`.** A regra V2 (`03-kit-rules.md` §4.6) é notebook-first.
+- ❌ Notebook sem outputs preservados — entrega "código fonte", não documentação executável.
+- ❌ Células markdown longas demais (> 500 palavras). Quebre em passos.
+- ❌ Células de código longas demais (> 30 linhas). Quebre em múltiplas células com markdown intercalado.
 - ❌ Lab que "roda em 5 minutos" sem profiling. Insuficiente.
 - ❌ Datasets sintéticos com 100 amostras quando o tema exige escala.
 - ❌ Comentário no código que descreve *o que* o código faz. Comente *por que* — a decisão técnica, o tradeoff escolhido.

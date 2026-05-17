@@ -14,7 +14,10 @@ cursos/<slug>/
 ├── 04-weekly-roadmap.md        ← gerado pelo Coordenador
 ├── 05-glossary.md              ← gerado pelo Coordenador
 ├── 06-concept-map.md           ← gerado pelo Coordenador
-├── coverage-matrix.md          ← gerado pelo Coordenador; atualizado pelo Revisor
+├── coverage-matrix.md          ← gerado pelo Coordenador; atualizado pelo Revisor + Tutor
+├── 00-onboarding/              ← gerado pelo Tutor de Onboarding (Fase 2.5)
+│   ├── diagnostic.md           ← transcript + resultado da entrevista
+│   └── leveling-plan.md        ← plano de nivelamento (quantas pré-semanas, em que ordem)
 ├── papers/                     ← acumulado por semana
 │   ├── weekly-papers.md
 │   ├── paper-review-template.md
@@ -29,30 +32,39 @@ cursos/<slug>/
 │   └── 06-defense-template.md
 ├── flashcards/                 ← consolidação de flashcards por semana
 └── modules/
-    ├── 01-week-01/
+    ├── 00-prereq-01/           ← pré-semana de nivelamento (gerada pelo Tutor; só se houver gap)
+    ├── 00-prereq-02/
+    ├── ...
+    ├── 01-week-01/             ← semanas reais do programa
     ├── 02-week-02/
     └── ...
 ```
 
-## Estrutura interna de cada semana
+## Estrutura interna de cada semana (real ou pré-semana)
 
 ```
-modules/NN-week-NN/
-├── 01-theory.md          ← gerado pelo Professor
-├── 02-readings.md        ← gerado pelo Professor
-├── 03-lab-guided.md      ← gerado pelo Eng. de Labs
-├── 04-lab-speedrun.md    ← gerado pelo Eng. de Labs
-├── 05-exercises.md       ← gerado pela Banca
-├── 06-mini-project.md    ← gerado pela Banca
-├── 07-assessment.md      ← gerado pela Banca
-├── 08-flashcards.md      ← gerado pela Banca
-├── 09-coverage.md        ← gerado pelo Revisor (audit report da semana)
+modules/NN-week-NN/   (ou modules/00-prereq-NN/)
+├── 01-theory.md (ou .ipynb)         ← gerado pelo Professor
+├── 02-readings.md                   ← gerado pelo Professor
+├── 03-lab-guided.ipynb              ← DEFAULT V2: notebook executável (FIA-style)
+├── 04-lab-speedrun.md               ← gerado pelo Eng. de Labs (.md, referência condensada)
+├── 05-exercises.md                  ← gerado pela Banca
+├── 06-mini-project.md               ← gerado pela Banca
+├── 07-assessment.md                 ← gerado pela Banca
+├── 08-flashcards.md                 ← gerado pela Banca
+├── 09-coverage.md                   ← gerado pelo Revisor (em pré-semanas: auto-audit do Tutor)
 ├── code/
-│   ├── requirements.txt
+│   ├── requirements.txt             ← versões pinned
 │   └── <scripts numerados: 01_*.py, 02_*.py, …>
 └── assets/
     └── <relatórios, diagramas, templates>
 ```
+
+### Formato dos arquivos por extensão
+
+- **`01-theory`** — por default `.md`. **Pode** ser `.ipynb` quando o tópico é "aprende fazendo" (feature engineering, EDA, transformações de dados). Quando `.md`, cap de 300–600 palavras e bloco `## Leituras canônicas (capítulos)` obrigatório (ver Theory-as-pointers, `03-kit-rules.md` §4.5). Sem livro canônico → declara `> Sem livro canônico identificado` e escreve denso.
+- **`03-lab-guided`** — sempre `.ipynb` (Notebook-first Practice Rule, `03-kit-rules.md` §4.6). Estrutura FIA-style: markdown curto (200–400 palavras) → célula de código → markdown de interpretação → repete. Outputs preservados após execução. Kernel Python 3.x declarado.
+- **`04-lab-speedrun`** — sempre `.md`. Cola condensada de comandos + checkpoints + critérios de pass. Não é executável; é referência para re-execução rápida em revisão.
 
 ---
 
@@ -113,12 +125,21 @@ Gerado pelo Coordenador. Diagramas Mermaid:
 
 ### `coverage-matrix.md`
 
-Gerado pelo Coordenador. Atualizado pelo Revisor de Fidelidade após cada semana.
+Gerado pelo Coordenador. Atualizado pelo Tutor de Onboarding (Fase 2.5) e pelo Revisor de Fidelidade (após cada semana real).
 
 Estrutura:
 
 ```markdown
 # Matriz de Cobertura
+
+## Pré-entrada (nivelamento)
+
+| Pré-semana | Gap diagnosticado | Mapeia para (semana real que exige) | Coberto? | Nota |
+|---:|---|---:|---|---|
+| 00-prereq-01 | Álgebra linear (produto interno, normas) | 01 | ⏳ pendente | — |
+| 00-prereq-02 | Probabilidade + softmax | 03 | ⏳ | — |
+
+## Semanas reais
 
 | Semana original | Tópicos oficiais | Deliverables originais | Semana do kit | Coberto? | Suplementado? | Nota |
 |---:|---|---|---:|---|---|---|
@@ -132,6 +153,25 @@ Estados:
 - `+ suplementado` — alguns tópicos suplementados (com fonte declarada)
 - `⚠ raso` — coberto mas profundidade abaixo do original
 - `✗ ausente` — tópico originalmente previsto não foi coberto
+
+### `00-onboarding/diagnostic.md`
+
+Gerado pelo Tutor de Onboarding. Contém:
+
+- **Perfil declarado** do aluno (resumo de `# Observações para Adaptação Autodidata`).
+- **Mapa de pré-requisitos do programa** extraído de `02-curriculum.md` + tópicos da primeira `01-theory.md` planejada.
+- **Transcript da entrevista** (perguntas + respostas do usuário).
+- **Diagnóstico por categoria** (matemática, programação, CS, domínio): `confortável` / `enferrujado` / `vazio`.
+- **Auto-audit**: cada pré-semana gerada cobre qual gap específico?
+
+### `00-onboarding/leveling-plan.md`
+
+Gerado pelo Tutor de Onboarding. Contém:
+
+- Total de pré-semanas: N (ou 0 se diagnóstico não exige).
+- Ordem das pré-semanas e tema de cada uma.
+- Mapeamento: pré-semana → gap → semana real onde o conhecimento será usado pela primeira vez.
+- Tempo estimado total do nivelamento (horas).
 
 ### `09-coverage.md` por semana
 

@@ -1,6 +1,6 @@
 # 05 — Workflow de execução
 
-> Orquestração das 6 personagens. Define **quando** cada uma é invocada, em **que ordem**, com **que inputs**, e como o estado avança.
+> Orquestração das 7 personagens. Define **quando** cada uma é invocada, em **que ordem**, com **que inputs**, e como o estado avança.
 >
 > A execução é **incremental e manual** — o usuário invoca cada persona explicitamente. Não há orquestrador automático nesta versão.
 
@@ -32,13 +32,32 @@
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
+│ FASE 2.5 — Onboarding & Nivelamento                             │
+│  └─ Tutor de Onboarding (11-tutor-onboarding.md)                │
+│       1. Mapeia pré-requisitos do programa                      │
+│       2. Conduz entrevista diagnóstica com o usuário            │
+│       3. Identifica gaps (matemática, programação, CS, domínio) │
+│       4. Gera leveling-plan                                     │
+│       5. Se há gap: invoca Professor + Eng-Labs + Banca para    │
+│          criar modules/00-prereq-NN/ com scaffolding pesado     │
+│       6. Auto-audit (sem Revisor — não há syllabus a comparar)  │
+│       output:                                                   │
+│         - 00-onboarding/diagnostic.md                           │
+│         - 00-onboarding/leveling-plan.md                        │
+│         - modules/00-prereq-01/, 00-prereq-02/, … (se needed)   │
+│       update no coverage-matrix.md:                             │
+│         - nova seção "Pré-entrada (nivelamento)"                │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
 │ FASE 3 — Geração de semana N (loop)                             │
 │                                                                 │
 │  3.1  Professor da Disciplina  (07-professor-disciplina.md)     │
 │        → 01-theory.md + 02-readings.md                          │
 │                                                                 │
 │  3.2  Engenheiro de Labs       (08-engenheiro-labs.md)          │
-│        → 03-lab-guided.md + 04-lab-speedrun.md + code/          │
+│        → 03-lab-guided.ipynb + 04-lab-speedrun.md + code/       │
 │                                                                 │
 │  3.3  Banca Examinadora        (09-banca-avaliacao.md)          │
 │        → 05-exercises.md + 06-mini-project.md +                 │
@@ -87,6 +106,16 @@ O usuário revisa especialmente:
 - A **filosofia pedagógica extraída** no `01-README.md`.
 - O **mapeamento syllabus original ↔ semanas do kit** no `coverage-matrix.md`.
 
+### Rodar diagnóstico de onboarding (Fase 2.5)
+
+```
+Rode o diagnóstico de onboarding em cursos/<slug>/ usando 11-tutor-onboarding.md.
+```
+
+O Tutor conduz uma entrevista estruturada (perguntas por categoria de pré-requisito), salva o transcript em `00-onboarding/diagnostic.md`, gera o `leveling-plan.md` e — se houver gaps críticos — cria as pré-semanas em `modules/00-prereq-NN/` invocando Professor + Eng-Labs + Banca por dentro.
+
+Quando o diagnóstico não identifica gap crítico (aluno já tem todos os pré-requisitos sólidos), o Tutor registra `leveling-plan.md: nenhum gap crítico identificado` e pula direto para Fase 3.
+
 ### Gerar semana N
 
 ```
@@ -113,8 +142,9 @@ Audite cursos/<slug>/modules/NN-week-NN/ usando 10-revisor-fidelidade.md.
 |---|---|---|---|
 | 1 | Pesquisador (`01`) | inputs do usuário; web | `cursos/<slug>/02-curriculum.md` |
 | 2 | Coordenador (`06`) | `02-curriculum.md`; `03-kit-rules.md`; `04-kit-output-schema.md` | `01-README.md`, `03-study-plan.md`, `04-weekly-roadmap.md`, `05-glossary.md`, `06-concept-map.md`, `coverage-matrix.md`; atualiza `02-curriculum.md` (filosofia) |
-| 3.1 | Professor (`07`) | `02-curriculum.md`, `03-study-plan.md`, `03-kit-rules.md`, filosofia, professores extraídos | `modules/NN-week-NN/01-theory.md`, `02-readings.md` |
-| 3.2 | Eng-Labs (`08`) | `01-theory.md`, `02-readings.md`, filosofia | `modules/NN-week-NN/03-lab-guided.md`, `04-lab-speedrun.md`, `code/` |
+| 2.5 | Tutor (`11`) | `02-curriculum.md`, `03-study-plan.md`, `04-weekly-roadmap.md` + respostas do usuário | `00-onboarding/diagnostic.md`, `00-onboarding/leveling-plan.md`, `modules/00-prereq-NN/` (se aplicável); atualiza `coverage-matrix.md` (seção de pré-entrada) |
+| 3.1 | Professor (`07`) | `02-curriculum.md`, `03-study-plan.md`, `03-kit-rules.md`, filosofia, professores extraídos | `modules/NN-week-NN/01-theory.md` (ou `.ipynb`), `02-readings.md` |
+| 3.2 | Eng-Labs (`08`) | `01-theory.*`, `02-readings.md`, filosofia | `modules/NN-week-NN/03-lab-guided.ipynb`, `04-lab-speedrun.md`, `code/` |
 | 3.3 | Banca (`09`) | todo conteúdo da semana | `modules/NN-week-NN/05-exercises.md`, `06-mini-project.md`, `07-assessment.md`, `08-flashcards.md` |
 | 3.4 | Revisor (`10`) | semana gerada + `02-curriculum.md` + `coverage-matrix.md` | `modules/NN-week-NN/09-coverage.md`; atualiza linha da semana N em `coverage-matrix.md` |
 
@@ -124,6 +154,7 @@ Audite cursos/<slug>/modules/NN-week-NN/ usando 10-revisor-fidelidade.md.
 
 - **Não gere uma semana sem ter o `coverage-matrix.md` da base.** O Coordenador precisa ter rodado.
 - **Não pule do Pesquisador direto para o Professor.** Sem filosofia extraída pelo Coordenador, o Professor não tem como calibrar a voz.
+- **Não pule a Fase 2.5 (Tutor) sem motivo.** O diagnóstico é leve e barato. Pulá-lo significa assumir que o aluno tem todos os pré-requisitos — premissa que falhou nos kits CMU/FIA V1.
 - **Não feche a semana com `✗` no `09-coverage.md`.** `✗` significa tópico previsto pelo syllabus original sem qualquer cobertura — é falha do clone.
 - **Geração incremental, não em lote.** Não gere todas as semanas de uma vez. O loop de revisão é o que garante qualidade.
 

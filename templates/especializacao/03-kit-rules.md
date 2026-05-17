@@ -120,6 +120,45 @@ Antes de gerar conteúdo, toda persona consulta a seção `# Filosofia Pedagógi
 
 Quando a filosofia colide com preferências do aluno declaradas em `# Observações para Adaptação Autodidata`, a **filosofia do programa prevalece** (o objetivo é clonar a especialização, não criar uma versão personalizada).
 
+### 4.5 Theory-as-pointers Rule
+
+O Professor (`07`) **não reescreve o livro-texto**. Quando existe livro canônico que cobre o tópico:
+
+1. Escreve resumo conciso de **300–600 palavras** que conecta o tópico ao restante do programa, explica intuição e indica o que será exercitado no notebook.
+2. Inclui bloco obrigatório `## Leituras canônicas (capítulos)` apontando **capítulo/seção/páginas específicas** — não título solto.
+   - ✅ Bom: `Géron 2019, *Hands-On ML*, cap. 4 §4.2, pp. 132–145.`
+   - ❌ Ruim: `Leia Géron 2019.`
+3. Pode incluir derivação curta de 1–2 pontos críticos (e.g., justificar $\sqrt{d_k}$ porque o aluno vai implementar isso no notebook). Não derivar tudo.
+4. Sempre indicar **tempo estimado** de leitura por capítulo apontado.
+
+Quando **não existe** livro canônico (paper de research recente, tópico de fronteira sem livro publicado), o Professor escreve denso como antes, e declara no topo: `> Sem livro canônico identificado — teoria escrita por extenso.`
+
+Operacionalização:
+
+- Aplicada no Professor (`07`) durante a geração.
+- Verificada pelo Revisor de Fidelidade (`10`) ao auditar a semana.
+
+### 4.6 Notebook-first Practice Rule
+
+Labs são por default **Jupyter notebooks** (`.ipynb`), no formato "FIA-style":
+
+- células markdown curtas (200–400 palavras por bloco) explicando o conceito;
+- célula de código executável logo abaixo (`pip install`, imports, transformações reais);
+- célula markdown de interpretação do output (o que esses números significam? qual decisão técnica eles implicam?);
+- repete por etapa do lab.
+
+Convenções:
+
+- `03-lab-guided` agora é `.ipynb`. O `04-lab-speedrun` continua `.md` (referência condensada para revisão futura — não é executável, é cola de comandos).
+- `01-theory` continua `.md` por default. **Pode** virar `.ipynb` quando "aprender fazendo" funciona melhor que explicar (e.g., feature engineering, EDA, transformações de dados — qualquer coisa onde demonstrar é mais barato que descrever).
+- Todo notebook deve ter:
+  - kernel spec declarado (Python 3.x);
+  - `requirements.txt` no mesmo `code/`;
+  - outputs preservados após execução (não notebook "limpo" sem run);
+  - seeds fixados quando há randomness.
+
+Aplicada no Eng. de Labs (`08`) durante a geração. Verificada pelo Revisor (`10`).
+
 ---
 
 ## 5. Objetivo pedagógico final
